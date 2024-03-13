@@ -3,6 +3,7 @@ package com.example.networking;
 import static java.net.URLEncoder.encode;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionBarPolicy;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,11 +17,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.networking.databinding.ActivityMainBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected RequestQueue queue = null;
     protected String cityName;
     final protected  String API_KEY="31e20d886922cc1856308ed89aae685d";
+    private ImageLoader imageLoader;
     private JSONObject response;
 
     @SuppressLint("SuspiciousIndentation")
@@ -49,6 +53,19 @@ public class MainActivity extends AppCompatActivity {
         binding.btnGet.setOnClickListener(e->{
             cityName = binding.edtCity.getText().toString();
             queue = Volley.newRequestQueue(this);
+
+            imageLoader = new ImageLoader(queue, new ImageLoader.ImageCache() {
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return null;
+                }
+
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                    // No need to implement in this example
+                }
+            });
+
             String stringURL = null;
             try {
                 stringURL = "https://api.openweathermap.org/data/2.5/weather?q=" + encode(cityName,  "UTF-8") + "&appid="+API_KEY+ "&units=metric";
@@ -81,6 +98,16 @@ public class MainActivity extends AppCompatActivity {
                             min = mainObject.getDouble("temp_min");
                             max = mainObject.getDouble("temp_max");
                             humidity = mainObject.getInt("humidity");
+
+                            JSONArray weatherArray = response.getJSONArray("weather");
+                            if (weatherArray.length() > 0) {
+                                 weatherObject = weatherArray.getJSONObject(0);
+                                 iconCode = weatherObject.getString("icon");
+                                String iconUrl = "https://openweathermap.org/img/w/" + iconCode + ".png";
+                                ImageLoader.ImageListener listener = ImageLoader.getImageListener(binding.img, 0, 0);
+                                imageLoader.get(iconUrl, listener);
+
+                            }
 
 
                         } catch (JSONException ex) {

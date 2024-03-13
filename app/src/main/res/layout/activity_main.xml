@@ -107,12 +107,12 @@
 
     <ImageView
         android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="54dp"
-        app:layout_constraintStart_toEndOf="@+id/humidityTemp"
-        app:layout_constraintTop_toBottomOf="@+id/humidityTemp"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        android:layout_width="133dp"
+        android:layout_height="130dp"
+        android:layout_marginEnd="136dp"
+        android:layout_marginBottom="164dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
