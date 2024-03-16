@@ -50,8 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
       binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+
         binding.btnGet.setOnClickListener(e->{
+
+
             cityName = binding.edtCity.getText().toString();
+
             queue = Volley.newRequestQueue(this);
 
             imageLoader = new ImageLoader(queue, new ImageLoader.ImageCache() {
@@ -82,18 +88,19 @@ public class MainActivity extends AppCompatActivity {
                     (response) -> {
 
                         JSONObject mainObject = null;
+
                         JSONObject weatherObject = null;
 
                         double current ;
                         double min ;
                         double max ;
                         int humidity ;
+
                         String iconCode;
 
                         try {
-                            Log.w("mervat","2");
+
                             mainObject = response.getJSONObject("main");
-                            Log.w("mervat","3");
                             current = mainObject.getDouble("temp");
                             min = mainObject.getDouble("temp_min");
                             max = mainObject.getDouble("temp_max");
@@ -121,24 +128,15 @@ public class MainActivity extends AppCompatActivity {
                             binding.temp.setVisibility(View.VISIBLE);
                             binding.minTemp.setText("The min temperature is:  " + min);
                             binding.minTemp.setVisibility(View.VISIBLE);
-                            binding.maxTemp.setText("The min temperature is:  " + max);
+                            binding.maxTemp.setText("The max temperature is:  " + max);
                             binding.maxTemp.setVisibility(View.VISIBLE);
-                            binding.humidityTemp.setText("The min temperature is:  " + humidity);
+                            binding.humidityTemp.setText("The humidity temperature is:  " + humidity);
                             binding.humidityTemp.setVisibility(View.VISIBLE);
                             // do this for all the textViews...
                         });
 
                     }, (error) -> { });
             queue.add (request);
-            String imageUrl = null;
-
-
-
-
-
-
-
-            ///
 
 
 
